@@ -18,6 +18,7 @@ function Navbar() {
           <>
             <Link to="/dashboard" style={styles.link}>Dashboard</Link>
             <Link to="/create-project" style={styles.link}>+ New Project</Link>
+            <Link to="/manage-applications" style={styles.link}>My Applicants</Link>
             <Link to="/notifications" style={styles.link}>Notifications</Link>
             <Link to="/edit-profile" style={styles.link}>Edit Profile</Link>
             <button onClick={logout} style={styles.btn}>Logout</button>

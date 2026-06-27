@@ -8,6 +8,7 @@ import Projects from "./pages/Projects";
 import CreateProject from "./pages/CreateProject";
 import Notifications from "./pages/Notifications";
 import EditProfile from "./pages/EditProfile";
+import ManageApplications from "./pages/ManageApplications";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/create-project" element={<CreateProject />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/manage-applications" element={<ManageApplications />} />
       </Routes>
     </BrowserRouter>
   );
