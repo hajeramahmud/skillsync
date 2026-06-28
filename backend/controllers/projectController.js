@@ -12,7 +12,9 @@ const getAllProjects = async (req, res) => {
 };
 
 const getProject = async (req, res) => {
-  const project = await Project.findById(req.params.id).populate("owner", "name email");
+  const project = await Project.findById(req.params.id)
+    .populate("owner", "name email")
+    .populate("members", "name email");
   if (!project) return res.status(404).json({ message: "Project not found" });
   res.json(project);
 };

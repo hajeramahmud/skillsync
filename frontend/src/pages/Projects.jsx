@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const getMatchPercent = (userSkills, skillsNeeded) => {
@@ -50,11 +51,14 @@ function ProjectCard({ p, userSkills, token, onApply }) {
           : "None specified"}
       </p>
       <p style={styles.owner}>Posted by {p.owner?.name}</p>
-      {token && (
-        <button onClick={() => onApply(p._id)} style={styles.btn}>
-          Apply
-        </button>
-      )}
+      <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
+        <Link to={`/projects/${p._id}`} style={styles.viewBtn}>View Details</Link>
+        {token && (
+          <button onClick={() => onApply(p._id)} style={styles.btn}>
+            Apply
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -172,13 +176,21 @@ const styles = {
   },
   owner: { color: "#888", fontSize: "13px", marginTop: "8px" },
   btn: {
-    marginTop: "12px",
     padding: "8px 16px",
     background: "#4f46e5",
     color: "#fff",
     border: "none",
     borderRadius: "4px",
     cursor: "pointer",
+  },
+  viewBtn: {
+    padding: "8px 16px",
+    background: "#fff",
+    color: "#4f46e5",
+    border: "1px solid #4f46e5",
+    borderRadius: "4px",
+    textDecoration: "none",
+    fontSize: "14px",
   },
   msg: {
     background: "#e0f2fe",
