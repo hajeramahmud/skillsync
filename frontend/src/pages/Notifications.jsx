@@ -1,13 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const token = localStorage.getItem("token");
+  const intervalRef = useRef(null);
+
+  const fetchNotifications = () => {
+    axios
+      .get("/api/notifications", { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => setNotifications(res.data))
+      .catch(() => {});
+  };
 
   useEffect(() => {
-    axios.get("/api/notifications", { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => setNotifications(res.data));
+    fetchNotifications();
+    intervalRef.current = setInterval(fetchNotifications, 30000);
+    return () => clearInterval(intervalRef.current);
   }, []);
 
   const markRead = async () => {
