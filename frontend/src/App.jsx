@@ -10,6 +10,7 @@ import Notifications from "./pages/Notifications";
 import EditProfile from "./pages/EditProfile";
 import ManageApplications from "./pages/ManageApplications";
 import ProjectDetail from "./pages/ProjectDetail";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/edit-profile" element={<EditProfile />} />
         <Route path="/manage-applications" element={<ManageApplications />} />
+        <Route path="/users/:userId" element={<UserProfile />} />
       </Routes>
     </BrowserRouter>
   );

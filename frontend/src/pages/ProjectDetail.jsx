@@ -115,7 +115,9 @@ function ProjectDetail() {
 
         <div style={styles.metaRow}>
           <span style={styles.metaLabel}>Owner:</span>
-          <span>{project.owner?.name}</span>
+          <Link to={`/users/${project.owner?._id}`} style={styles.memberLink}>
+            {project.owner?.name}
+          </Link>
         </div>
 
         {project.members?.length > 0 && (
@@ -124,7 +126,7 @@ function ProjectDetail() {
             {project.members.map((m) => (
               <Link
                 key={m._id || m}
-                to={`/profile/${m._id || m}`}
+                to={`/users/${m._id || m}`}
                 style={styles.memberLink}
               >
                 {m.name || "Member"}
@@ -181,7 +183,12 @@ function ProjectDetail() {
                   return (
                     <div key={task._id} style={styles.taskCard}>
                       <p style={styles.taskTitle}>{task.title}</p>
-                      <p style={styles.taskMeta}>by {task.createdBy?.name}</p>
+                      <p style={styles.taskMeta}>
+                        by{" "}
+                        <Link to={`/users/${task.createdBy?._id}`} style={styles.creatorLink}>
+                          {task.createdBy?.name}
+                        </Link>
+                      </p>
                       <div style={styles.taskActions}>
                         {idx > 0 && (
                           <button
@@ -316,6 +323,7 @@ const styles = {
   },
   taskTitle: { margin: "0 0 4px", fontWeight: "500", fontSize: "14px" },
   taskMeta: { margin: "0 0 8px", color: "#888", fontSize: "12px" },
+  creatorLink: { color: "#4f46e5", textDecoration: "none", fontWeight: "500" },
   taskActions: { display: "flex", gap: "6px" },
   moveBtn: {
     padding: "3px 10px",
