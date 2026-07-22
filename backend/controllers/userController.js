@@ -1,5 +1,10 @@
 const User = require("../models/User");
 
+const getAllUsers = async (req, res) => {
+  const users = await User.find().select("-password");
+  res.json(users);
+};
+
 const getProfile = async (req, res) => {
   res.json(req.user);
 };
@@ -22,4 +27,4 @@ const getPublicProfile = async (req, res) => {
   res.json(user);
 };
 
-module.exports = { getProfile, updateProfile, getPublicProfile };
+module.exports = { getAllUsers, getProfile, updateProfile, getPublicProfile };

@@ -41,6 +41,7 @@ function Navbar() {
         {token ? (
           <>
             <Link to="/dashboard" style={styles.link}>Dashboard</Link>
+            <Link to="/talent" style={styles.link}>Talent</Link>
             <Link to="/create-project" style={styles.link}>+ New Project</Link>
             <Link to="/manage-applications" style={styles.link}>My Applicants</Link>
             <Link to="/notifications" style={styles.notifLink}>
