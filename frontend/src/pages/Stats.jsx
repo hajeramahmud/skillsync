@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 function Stats() {
   const [stats, setStats] = useState(null);
@@ -12,8 +13,8 @@ function Stats() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p style={{ padding: "40px" }}>Loading stats...</p>;
-  if (!stats) return <p style={{ padding: "40px" }}>Failed to load stats.</p>;
+  if (loading) return <p style={styles.loading}>Loading stats...</p>;
+  if (!stats) return <p style={styles.loading}>Failed to load stats.</p>;
 
   const maxSkillCount = stats.topSkills[0]?.count || 1;
 
@@ -125,54 +126,59 @@ function Stats() {
 }
 
 const styles = {
+  loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "960px", margin: "40px auto", padding: "0 24px 60px" },
-  pageTitle: { margin: "0 0 4px", fontSize: "28px", color: "#1f2937" },
-  subtitle: { color: "#6b7280", marginBottom: "28px" },
+  pageTitle: { margin: "0 0 4px", fontSize: "28px", color: colors.text },
+  subtitle: { color: colors.textMuted, marginBottom: "28px" },
   totalsRow: { display: "flex", gap: "16px", marginBottom: "32px" },
   totalCard: {
     flex: 1,
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderTop: `3px solid ${colors.accent}`,
+    color: colors.text,
     borderRadius: "10px",
     padding: "20px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    boxShadow: shadow.card,
   },
-  totalNum: { fontSize: "36px", fontWeight: "bold" },
-  totalLabel: { fontSize: "13px", opacity: 0.85, marginTop: "4px" },
+  totalNum: { fontSize: "36px", fontWeight: "bold", color: colors.accent },
+  totalLabel: { fontSize: "13px", color: colors.textMuted, marginTop: "4px" },
   grid: { display: "flex", gap: "24px", alignItems: "flex-start" },
   rightCol: { flex: 1, display: "flex", flexDirection: "column", gap: "24px" },
   section: {
     flex: 1,
-    background: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
     borderRadius: "10px",
     padding: "20px 24px",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+    boxShadow: shadow.card,
   },
-  sectionTitle: { margin: "0 0 16px", fontSize: "16px", color: "#111827" },
-  empty: { color: "#9ca3af", fontSize: "14px" },
+  sectionTitle: { margin: "0 0 16px", fontSize: "16px", color: colors.text },
+  empty: { color: colors.textFaint, fontSize: "14px" },
   skillRow: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "14px" },
-  skillRank: { color: "#9ca3af", fontSize: "13px", width: "24px", textAlign: "right" },
+  skillRank: { color: colors.textFaint, fontSize: "13px", width: "24px", textAlign: "right" },
   skillBarWrap: { flex: 1 },
   skillNameRow: { display: "flex", justifyContent: "space-between", marginBottom: "4px" },
-  skillName: { fontWeight: "500", fontSize: "14px", color: "#1f2937" },
-  skillCount: { color: "#6b7280", fontSize: "12px" },
-  barBg: { background: "#f3f4f6", borderRadius: "999px", height: "8px" },
-  barFill: { background: "#4f46e5", borderRadius: "999px", height: "8px", transition: "width 0.4s ease" },
+  skillName: { fontWeight: "500", fontSize: "14px", color: colors.text },
+  skillCount: { color: colors.textMuted, fontSize: "12px" },
+  barBg: { background: colors.surfaceAlt, borderRadius: "999px", height: "8px" },
+  barFill: { background: colors.accent, borderRadius: "999px", height: "8px", transition: "width 0.4s ease" },
   listCard: {
     display: "flex",
     alignItems: "flex-start",
     gap: "12px",
     padding: "12px 0",
-    borderBottom: "1px solid #f3f4f6",
+    borderBottom: `1px solid ${colors.border}`,
   },
   listRank: {
     width: "28px",
     height: "28px",
     borderRadius: "50%",
-    background: "#eef2ff",
-    color: "#4f46e5",
+    background: colors.accentMuted,
+    color: colors.accentHover,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -184,8 +190,8 @@ const styles = {
     width: "36px",
     height: "36px",
     borderRadius: "50%",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -193,18 +199,19 @@ const styles = {
     fontSize: "15px",
     flexShrink: 0,
   },
-  listTitle: { margin: "0 0 2px", fontWeight: "600", fontSize: "14px" },
-  listMeta: { margin: "0 0 6px", color: "#6b7280", fontSize: "12px" },
+  listTitle: { margin: "0 0 2px", fontWeight: "600", fontSize: "14px", color: colors.text },
+  listMeta: { margin: "0 0 6px", color: colors.textMuted, fontSize: "12px" },
   tagRow: { display: "flex", gap: "4px", flexWrap: "wrap" },
   tag: {
-    background: "#f3f4f6",
-    color: "#374151",
+    background: colors.surfaceAlt,
+    color: colors.textMuted,
+    border: `1px solid ${colors.border}`,
     padding: "2px 8px",
     borderRadius: "4px",
     fontSize: "11px",
   },
   rankBadge: {
-    color: "#9ca3af",
+    color: colors.textFaint,
     fontSize: "12px",
     fontWeight: "600",
     marginLeft: "auto",

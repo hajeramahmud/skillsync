@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 const getMatchPercent = (userSkills, skillsNeeded) => {
   if (!skillsNeeded.length) return 100;
@@ -10,13 +11,13 @@ const getMatchPercent = (userSkills, skillsNeeded) => {
 };
 
 const badgeStyle = (pct) => {
-  const color = pct >= 75 ? "#16a34a" : pct >= 40 ? "#d97706" : "#6b7280";
+  const bg = pct >= 75 ? colors.success : pct >= 40 ? colors.warning : colors.textFaint;
   return {
     display: "inline-block",
     padding: "3px 10px",
     borderRadius: "999px",
-    background: color,
-    color: "#fff",
+    background: bg,
+    color: "#0b0e14",
     fontSize: "12px",
     fontWeight: "bold",
     marginBottom: "8px",
@@ -27,16 +28,16 @@ function ProjectCard({ p, userSkills, token, onApply }) {
   const pct = userSkills ? getMatchPercent(userSkills, p.skillsNeeded) : null;
 
   return (
-    <div style={styles.card}>
+    <div style={styles.card} className="ss-card">
       {pct !== null && (
         <span style={badgeStyle(pct)}>
           {pct === 100 && p.skillsNeeded.length === 0 ? "Open to All" : `${pct}% Match`}
         </span>
       )}
-      <h3 style={{ margin: "4px 0 8px" }}>{p.title}</h3>
-      <p style={{ color: "#444", marginBottom: "8px" }}>{p.description}</p>
+      <h3 style={{ margin: "4px 0 8px", color: colors.text }}>{p.title}</h3>
+      <p style={{ color: colors.textMuted, marginBottom: "8px" }}>{p.description}</p>
       <p style={styles.skills}>
-        <strong>Skills needed:</strong>{" "}
+        <strong style={{ color: colors.text }}>Skills needed:</strong>{" "}
         {p.skillsNeeded.length
           ? p.skillsNeeded.map((skill) => {
               const isMatch =
@@ -52,9 +53,9 @@ function ProjectCard({ p, userSkills, token, onApply }) {
       </p>
       <p style={styles.owner}>Posted by {p.owner?.name}</p>
       <div style={{ display: "flex", gap: "8px", marginTop: "12px" }}>
-        <Link to={`/projects/${p._id}`} style={styles.viewBtn}>View Details</Link>
+        <Link to={`/projects/${p._id}`} style={styles.viewBtn} className="ss-btn-outline">View Details</Link>
         {token && (
-          <button onClick={() => onApply(p._id)} style={styles.btn}>
+          <button onClick={() => onApply(p._id)} style={styles.btn} className="ss-btn-primary">
             Apply
           </button>
         )}
@@ -148,6 +149,7 @@ function Projects() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={styles.search}
+          className="ss-input"
         />
 
         {allSkills.length > 0 && (
@@ -159,6 +161,7 @@ function Projects() {
                   key={skill}
                   onClick={() => toggleSkill(skill)}
                   style={active ? styles.chipActive : styles.chip}
+                  className="ss-chip"
                 >
                   {skill}
                 </button>
@@ -168,7 +171,7 @@ function Projects() {
         )}
 
         {hasActiveFilters && (
-          <button onClick={clearFilters} style={styles.clearBtn}>
+          <button onClick={clearFilters} style={styles.clearBtn} className="ss-btn-outline">
             Clear filters
           </button>
         )}
@@ -178,10 +181,10 @@ function Projects() {
         <section style={{ marginBottom: "40px" }}>
           <div style={styles.sectionHeader}>
             <span style={styles.sectionIcon}>✦</span>
-            <h2 style={{ margin: 0 }}>Recommended for You</h2>
+            <h2 style={{ margin: 0, color: colors.text }}>Recommended for You</h2>
           </div>
           <p style={styles.sectionSub}>
-            Based on your skills: <strong>{userSkills.join(", ")}</strong>
+            Based on your skills: <strong style={{ color: colors.text }}>{userSkills.join(", ")}</strong>
           </p>
           {recommended.map((p) => (
             <ProjectCard
@@ -196,10 +199,10 @@ function Projects() {
       )}
 
       <section>
-        <h2 style={{ marginBottom: "16px" }}>All Projects</h2>
-        {projects.length === 0 && <p>No projects yet.</p>}
+        <h2 style={{ marginBottom: "16px", color: colors.text }}>All Projects</h2>
+        {projects.length === 0 && <p style={styles.emptyText}>No projects yet.</p>}
         {projects.length > 0 && filteredProjects.length === 0 && (
-          <p>No projects match your filters.</p>
+          <p style={styles.emptyText}>No projects match your filters.</p>
         )}
         {filteredProjects.map((p) => (
           <ProjectCard
@@ -218,18 +221,20 @@ function Projects() {
 const styles = {
   container: { maxWidth: "700px", margin: "40px auto", padding: "24px" },
   card: {
-    background: "#fff",
+    background: colors.surface,
     padding: "20px",
-    borderRadius: "8px",
+    borderRadius: "10px",
     marginBottom: "16px",
-    borderLeft: "4px solid #4f46e5",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+    border: `1px solid ${colors.border}`,
+    borderLeft: `4px solid ${colors.accent}`,
+    boxShadow: shadow.card,
   },
-  skills: { color: "#555", marginTop: "8px", marginBottom: "4px" },
+  skills: { color: colors.textMuted, marginTop: "8px", marginBottom: "4px" },
   skillTag: {
     display: "inline-block",
-    background: "#f3f4f6",
-    color: "#374151",
+    background: colors.surfaceAlt,
+    color: colors.textMuted,
+    border: `1px solid ${colors.border}`,
     borderRadius: "4px",
     padding: "2px 8px",
     marginRight: "6px",
@@ -237,78 +242,79 @@ const styles = {
   },
   skillMatch: {
     display: "inline-block",
-    background: "#dcfce7",
-    color: "#15803d",
+    background: colors.successMuted,
+    color: colors.success,
     borderRadius: "4px",
     padding: "2px 8px",
     marginRight: "6px",
     fontSize: "13px",
     fontWeight: "600",
   },
-  owner: { color: "#888", fontSize: "13px", marginTop: "8px" },
+  owner: { color: colors.textFaint, fontSize: "13px", marginTop: "8px" },
+  emptyText: { color: colors.textMuted },
   btn: {
     padding: "8px 16px",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
+    borderRadius: "6px",
+    fontWeight: "600",
   },
   viewBtn: {
     padding: "8px 16px",
-    background: "#fff",
-    color: "#4f46e5",
-    border: "1px solid #4f46e5",
-    borderRadius: "4px",
+    background: "transparent",
+    color: colors.text,
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
     textDecoration: "none",
     fontSize: "14px",
   },
   msg: {
-    background: "#e0f2fe",
+    background: colors.accentMuted,
+    color: colors.accent,
     padding: "10px",
-    borderRadius: "4px",
+    borderRadius: "6px",
     marginBottom: "12px",
   },
   filterBar: { marginBottom: "32px" },
   search: {
     width: "100%",
-    padding: "10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
     marginBottom: "12px",
   },
   chipRow: { display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "12px" },
   chip: {
     padding: "5px 14px",
     borderRadius: "999px",
-    border: "1px solid #ddd",
-    background: "#fff",
-    color: "#374151",
+    border: `1px solid ${colors.border}`,
+    background: colors.surface,
+    color: colors.textMuted,
     fontSize: "13px",
-    cursor: "pointer",
   },
   chipActive: {
     padding: "5px 14px",
     borderRadius: "999px",
-    border: "1px solid #4f46e5",
-    background: "#4f46e5",
-    color: "#fff",
+    border: `1px solid ${colors.accent}`,
+    background: colors.accentMuted,
+    color: colors.accentHover,
     fontSize: "13px",
     fontWeight: "600",
-    cursor: "pointer",
   },
   clearBtn: {
     padding: "5px 14px",
-    background: "none",
-    border: "1px solid #ccc",
-    color: "#555",
-    borderRadius: "4px",
+    background: "transparent",
+    border: `1px solid ${colors.border}`,
+    color: colors.textMuted,
+    borderRadius: "6px",
     fontSize: "13px",
-    cursor: "pointer",
   },
   sectionHeader: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" },
-  sectionIcon: { color: "#4f46e5", fontSize: "18px" },
-  sectionSub: { color: "#666", fontSize: "14px", marginBottom: "16px" },
+  sectionIcon: { color: colors.accent, fontSize: "18px" },
+  sectionSub: { color: colors.textMuted, fontSize: "14px", marginBottom: "16px" },
 };
 
 export default Projects;

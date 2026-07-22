@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -22,34 +23,45 @@ function Dashboard() {
       .then((res) => setUser(res.data));
   }, []);
 
-  if (!user) return <p style={{ padding: "24px" }}>Loading...</p>;
+  if (!user) return <p style={styles.loading}>Loading...</p>;
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h2 style={{ margin: 0 }}>Welcome, {user.name}</h2>
+        <h2 style={{ margin: 0, color: colors.text }}>Welcome, {user.name}</h2>
         {currentUserId && (
-          <Link to={`/users/${currentUserId}`} style={styles.profileLink}>
+          <Link to={`/users/${currentUserId}`} style={styles.profileLink} className="ss-btn-outline">
             View My Profile
           </Link>
         )}
       </div>
       <p style={styles.email}>{user.email}</p>
-      <p><strong>Bio:</strong> {user.bio || "No bio yet"}</p>
-      <p><strong>Skills:</strong> {user.skills.length ? user.skills.join(", ") : "No skills added yet"}</p>
+      <p style={styles.row}><strong style={{ color: colors.text }}>Bio:</strong> <span style={styles.value}>{user.bio || "No bio yet"}</span></p>
+      <p style={styles.row}><strong style={{ color: colors.text }}>Skills:</strong> <span style={styles.value}>{user.skills.length ? user.skills.join(", ") : "No skills added yet"}</span></p>
     </div>
   );
 }
 
 const styles = {
-  container: { maxWidth: "600px", margin: "40px auto", padding: "24px", background: "#fff", borderRadius: "8px" },
+  loading: { padding: "24px", color: colors.textMuted },
+  container: {
+    maxWidth: "600px",
+    margin: "40px auto",
+    padding: "28px",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderRadius: "12px",
+    boxShadow: shadow.card,
+  },
   header: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px" },
-  email: { color: "#888", marginBottom: "16px" },
+  email: { color: colors.textMuted, marginBottom: "16px" },
+  row: { marginTop: "6px" },
+  value: { color: colors.textMuted },
   profileLink: {
     fontSize: "14px",
-    color: "#4f46e5",
+    color: colors.accent,
     textDecoration: "none",
-    background: "#eef2ff",
+    border: `1px solid ${colors.border}`,
     padding: "6px 14px",
     borderRadius: "6px",
     fontWeight: "500",

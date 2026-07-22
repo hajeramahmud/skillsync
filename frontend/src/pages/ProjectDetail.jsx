@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 const STATUSES = ["todo", "inprogress", "done"];
 const STATUS_LABELS = { todo: "To Do", inprogress: "In Progress", done: "Done" };
-const STATUS_COLORS = { todo: "#6366f1", inprogress: "#f59e0b", done: "#10b981" };
+const STATUS_COLORS = { todo: colors.accent, inprogress: colors.warning, done: colors.success };
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -88,8 +89,8 @@ function ProjectDetail() {
     setTasks((prev) => prev.filter((t) => t._id !== taskId));
   };
 
-  if (loading) return <p style={{ padding: "40px" }}>Loading...</p>;
-  if (!project) return <p style={{ padding: "40px" }}>Project not found.</p>;
+  if (loading) return <p style={styles.loading}>Loading...</p>;
+  if (!project) return <p style={styles.loading}>Project not found.</p>;
 
   const tasksByStatus = STATUSES.reduce((acc, s) => {
     acc[s] = tasks.filter((t) => t.status === s);
@@ -99,8 +100,8 @@ function ProjectDetail() {
   return (
     <div style={styles.container}>
       <div style={styles.infoCard}>
-        <h2 style={{ margin: "0 0 8px" }}>{project.title}</h2>
-        <p style={{ color: "#555", marginBottom: "12px" }}>{project.description}</p>
+        <h2 style={{ margin: "0 0 8px", color: colors.text }}>{project.title}</h2>
+        <p style={{ color: colors.textMuted, marginBottom: "12px" }}>{project.description}</p>
 
         <div style={styles.metaRow}>
           <span style={styles.metaLabel}>Skills needed:</span>
@@ -109,13 +110,13 @@ function ProjectDetail() {
               <span key={s} style={styles.skillTag}>{s}</span>
             ))
           ) : (
-            <span style={{ color: "#888" }}>None specified</span>
+            <span style={{ color: colors.textFaint }}>None specified</span>
           )}
         </div>
 
         <div style={styles.metaRow}>
           <span style={styles.metaLabel}>Owner:</span>
-          <Link to={`/users/${project.owner?._id}`} style={styles.memberLink}>
+          <Link to={`/users/${project.owner?._id}`} style={styles.memberLink} className="ss-link">
             {project.owner?.name}
           </Link>
         </div>
@@ -128,6 +129,7 @@ function ProjectDetail() {
                 key={m._id || m}
                 to={`/users/${m._id || m}`}
                 style={styles.memberLink}
+                className="ss-link"
               >
                 {m.name || "Member"}
               </Link>
@@ -139,7 +141,7 @@ function ProjectDetail() {
       {canAccess ? (
         <>
           <div style={styles.boardHeader}>
-            <h3 style={{ margin: 0 }}>Task Board</h3>
+            <h3 style={{ margin: 0, color: colors.text }}>Task Board</h3>
             <div style={styles.addRow}>
               <input
                 value={newTitle}
@@ -147,8 +149,9 @@ function ProjectDetail() {
                 onKeyDown={(e) => e.key === "Enter" && addTask()}
                 placeholder="New task title..."
                 style={styles.input}
+                className="ss-input"
               />
-              <button onClick={addTask} style={styles.addBtn}>
+              <button onClick={addTask} style={styles.addBtn} className="ss-btn-primary">
                 + Add Task
               </button>
             </div>
@@ -164,7 +167,7 @@ function ProjectDetail() {
                     borderBottom: `3px solid ${STATUS_COLORS[status]}`,
                   }}
                 >
-                  <span style={{ fontWeight: "600" }}>{STATUS_LABELS[status]}</span>
+                  <span style={{ fontWeight: "600", color: colors.text }}>{STATUS_LABELS[status]}</span>
                   <span style={{ ...styles.countBadge, background: STATUS_COLORS[status] }}>
                     {tasksByStatus[status].length}
                   </span>
@@ -181,11 +184,11 @@ function ProjectDetail() {
                     (project.owner?._id || project.owner) === currentUserId;
 
                   return (
-                    <div key={task._id} style={styles.taskCard}>
+                    <div key={task._id} style={styles.taskCard} className="ss-card">
                       <p style={styles.taskTitle}>{task.title}</p>
                       <p style={styles.taskMeta}>
                         by{" "}
-                        <Link to={`/users/${task.createdBy?._id}`} style={styles.creatorLink}>
+                        <Link to={`/users/${task.createdBy?._id}`} style={styles.creatorLink} className="ss-link">
                           {task.createdBy?.name}
                         </Link>
                       </p>
@@ -227,7 +230,7 @@ function ProjectDetail() {
         </>
       ) : (
         <div style={styles.lockedBox}>
-          <p style={{ margin: 0, color: "#555" }}>
+          <p style={{ margin: 0, color: colors.textMuted }}>
             {token
               ? "You must be a member of this project to access the task board."
               : "Log in and join this project to access the task board."}
@@ -239,28 +242,31 @@ function ProjectDetail() {
 }
 
 const styles = {
+  loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "900px", margin: "40px auto", padding: "0 24px 60px" },
   infoCard: {
-    background: "#fff",
+    background: colors.surface,
     padding: "24px",
     borderRadius: "10px",
-    borderLeft: "4px solid #4f46e5",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+    border: `1px solid ${colors.border}`,
+    borderLeft: `4px solid ${colors.accent}`,
+    boxShadow: shadow.card,
     marginBottom: "32px",
   },
   metaRow: { display: "flex", alignItems: "center", gap: "8px", marginTop: "8px", flexWrap: "wrap" },
-  metaLabel: { fontWeight: "600", color: "#333", minWidth: "100px" },
+  metaLabel: { fontWeight: "600", color: colors.text, minWidth: "100px" },
   skillTag: {
-    background: "#f3f4f6",
-    color: "#374151",
+    background: colors.surfaceAlt,
+    color: colors.textMuted,
+    border: `1px solid ${colors.border}`,
     borderRadius: "4px",
     padding: "2px 10px",
     fontSize: "13px",
   },
   memberLink: {
-    color: "#4f46e5",
+    color: colors.accent,
     textDecoration: "none",
-    background: "#eef2ff",
+    background: colors.accentMuted,
     padding: "2px 10px",
     borderRadius: "4px",
     fontSize: "13px",
@@ -277,24 +283,26 @@ const styles = {
   input: {
     padding: "8px 12px",
     borderRadius: "6px",
-    border: "1px solid #ddd",
+    border: `1px solid ${colors.border}`,
+    background: colors.surfaceAlt,
+    color: colors.text,
     fontSize: "14px",
     width: "240px",
   },
   addBtn: {
     padding: "8px 16px",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     border: "none",
     borderRadius: "6px",
-    cursor: "pointer",
     fontWeight: "600",
   },
-  errText: { color: "#dc2626", fontSize: "13px", margin: "4px 0 0" },
+  errText: { color: colors.danger, fontSize: "13px", margin: "4px 0 0" },
   board: { display: "flex", gap: "16px", alignItems: "flex-start" },
   column: {
     flex: 1,
-    background: "#f9fafb",
+    background: colors.surfaceAlt,
+    border: `1px solid ${colors.border}`,
     borderRadius: "10px",
     padding: "16px",
     minHeight: "200px",
@@ -307,47 +315,45 @@ const styles = {
     marginBottom: "12px",
   },
   countBadge: {
-    color: "#fff",
+    color: "#0b0e14",
     borderRadius: "999px",
     padding: "2px 8px",
     fontSize: "12px",
     fontWeight: "bold",
   },
-  emptyCol: { color: "#aaa", fontSize: "13px", textAlign: "center", marginTop: "16px" },
+  emptyCol: { color: colors.textFaint, fontSize: "13px", textAlign: "center", marginTop: "16px" },
   taskCard: {
-    background: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
     borderRadius: "8px",
     padding: "12px",
     marginBottom: "10px",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.07)",
+    boxShadow: shadow.card,
   },
-  taskTitle: { margin: "0 0 4px", fontWeight: "500", fontSize: "14px" },
-  taskMeta: { margin: "0 0 8px", color: "#888", fontSize: "12px" },
-  creatorLink: { color: "#4f46e5", textDecoration: "none", fontWeight: "500" },
+  taskTitle: { margin: "0 0 4px", fontWeight: "500", fontSize: "14px", color: colors.text },
+  taskMeta: { margin: "0 0 8px", color: colors.textFaint, fontSize: "12px" },
+  creatorLink: { color: colors.accent, textDecoration: "none", fontWeight: "500" },
   taskActions: { display: "flex", gap: "6px" },
   moveBtn: {
     padding: "3px 10px",
-    background: "#e5e7eb",
-    color: "#374151",
+    background: colors.surfaceHover,
+    color: "#fff",
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
     fontSize: "13px",
-    color: "#fff",
   },
   deleteBtn: {
     padding: "3px 8px",
-    background: "#fee2e2",
-    color: "#dc2626",
+    background: colors.dangerMuted,
+    color: colors.danger,
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
     fontSize: "13px",
     marginLeft: "auto",
   },
   lockedBox: {
-    background: "#f9fafb",
-    border: "1px dashed #ddd",
+    background: colors.surfaceAlt,
+    border: `1px dashed ${colors.border}`,
     borderRadius: "10px",
     padding: "24px",
     textAlign: "center",

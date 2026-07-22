@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 function UserCard({ u, search }) {
   const query = search.trim().toLowerCase();
 
   return (
-    <div style={styles.card}>
-      <Link to={`/users/${u._id}`} style={styles.nameLink}>
+    <div style={styles.card} className="ss-card">
+      <Link to={`/users/${u._id}`} style={styles.nameLink} className="ss-link">
         <h3 style={{ margin: "0 0 4px" }}>{u.name}</h3>
       </Link>
       <p style={styles.email}>{u.email}</p>
@@ -60,7 +61,7 @@ function Talent() {
 
   return (
     <div style={styles.container}>
-      <h2 style={{ marginBottom: "6px" }}>Talent Directory</h2>
+      <h2 style={{ marginBottom: "6px", color: colors.text }}>Talent Directory</h2>
       <p style={styles.sub}>Browse registered students and find teammates by skill.</p>
 
       <input
@@ -68,6 +69,7 @@ function Talent() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         style={styles.search}
+        className="ss-input"
       />
 
       {error && <p style={styles.error}>{error}</p>}
@@ -87,30 +89,34 @@ function Talent() {
 
 const styles = {
   container: { maxWidth: "700px", margin: "40px auto", padding: "24px" },
-  sub: { color: "#666", marginBottom: "16px" },
+  sub: { color: colors.textMuted, marginBottom: "16px" },
   search: {
     width: "100%",
-    padding: "10px",
-    border: "1px solid #ddd",
-    borderRadius: "4px",
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
     marginBottom: "24px",
   },
   card: {
-    background: "#fff",
+    background: colors.surface,
     padding: "20px",
-    borderRadius: "8px",
+    borderRadius: "10px",
     marginBottom: "16px",
-    borderLeft: "4px solid #4f46e5",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
+    border: `1px solid ${colors.border}`,
+    borderLeft: `4px solid ${colors.accent}`,
+    boxShadow: shadow.card,
   },
-  nameLink: { textDecoration: "none", color: "inherit" },
-  email: { color: "#888", fontSize: "13px", marginBottom: "8px" },
-  bio: { color: "#444", marginBottom: "8px" },
+  nameLink: { textDecoration: "none", color: colors.text },
+  email: { color: colors.textFaint, fontSize: "13px", marginBottom: "8px" },
+  bio: { color: colors.textMuted, marginBottom: "8px" },
   skillsRow: { marginTop: "8px" },
   skillTag: {
     display: "inline-block",
-    background: "#f3f4f6",
-    color: "#374151",
+    background: colors.surfaceAlt,
+    color: colors.textMuted,
+    border: `1px solid ${colors.border}`,
     borderRadius: "4px",
     padding: "2px 8px",
     marginRight: "6px",
@@ -119,8 +125,8 @@ const styles = {
   },
   skillMatch: {
     display: "inline-block",
-    background: "#dcfce7",
-    color: "#15803d",
+    background: colors.successMuted,
+    color: colors.success,
     borderRadius: "4px",
     padding: "2px 8px",
     marginRight: "6px",
@@ -128,10 +134,10 @@ const styles = {
     fontSize: "13px",
     fontWeight: "600",
   },
-  noSkills: { color: "#aaa", fontSize: "13px" },
-  notice: { padding: "40px", textAlign: "center", color: "#666" },
-  empty: { color: "#888", textAlign: "center", marginTop: "40px" },
-  error: { color: "red" },
+  noSkills: { color: colors.textFaint, fontSize: "13px" },
+  notice: { padding: "40px", textAlign: "center", color: colors.textMuted },
+  empty: { color: colors.textMuted, textAlign: "center", marginTop: "40px" },
+  error: { color: colors.danger },
 };
 
 export default Talent;

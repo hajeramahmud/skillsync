@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 function EditProfile() {
   const [form, setForm] = useState({ name: "", bio: "", skills: "" });
@@ -30,25 +31,54 @@ function EditProfile() {
 
   return (
     <div style={styles.container}>
-      <h2>Edit Profile</h2>
+      <h2 style={{ color: colors.text }}>Edit Profile</h2>
       {message && <p style={styles.msg}>{message}</p>}
       <form onSubmit={handleSubmit} style={styles.form}>
-        <input placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={styles.input} />
-        <textarea placeholder="Bio" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} style={styles.textarea} />
-        <input placeholder="Skills (comma separated)" value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} style={styles.input} />
-        <button type="submit" style={styles.btn}>Save Changes</button>
+        <input placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} style={styles.input} className="ss-input" />
+        <textarea placeholder="Bio" value={form.bio} onChange={(e) => setForm({ ...form, bio: e.target.value })} style={styles.textarea} className="ss-input" />
+        <input placeholder="Skills (comma separated)" value={form.skills} onChange={(e) => setForm({ ...form, skills: e.target.value })} style={styles.input} className="ss-input" />
+        <button type="submit" style={styles.btn} className="ss-btn-primary">Save Changes</button>
       </form>
     </div>
   );
 }
 
 const styles = {
-  container: { maxWidth: "500px", margin: "40px auto", padding: "24px", background: "#fff", borderRadius: "8px" },
+  container: {
+    maxWidth: "500px",
+    margin: "40px auto",
+    padding: "28px",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderRadius: "12px",
+    boxShadow: shadow.card,
+  },
   form: { display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" },
-  input: { padding: "10px", border: "1px solid #ddd", borderRadius: "4px" },
-  textarea: { padding: "10px", border: "1px solid #ddd", borderRadius: "4px", height: "80px", resize: "vertical" },
-  btn: { padding: "10px", background: "#4f46e5", color: "#fff", border: "none", borderRadius: "4px" },
-  msg: { color: "green" },
+  input: {
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
+  },
+  textarea: {
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
+    height: "80px",
+    resize: "vertical",
+  },
+  btn: {
+    padding: "10px",
+    background: colors.accent,
+    color: "#0b0e14",
+    border: "none",
+    borderRadius: "6px",
+    fontWeight: "600",
+  },
+  msg: { color: colors.success, fontSize: "14px" },
 };
 
 export default EditProfile;

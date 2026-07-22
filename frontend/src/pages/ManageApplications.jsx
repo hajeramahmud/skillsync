@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 function ManageApplications() {
   const [myProjects, setMyProjects] = useState([]);
@@ -59,11 +60,11 @@ function ManageApplications() {
     }
   };
 
-  if (loading) return <p style={{ padding: "40px" }}>Loading...</p>;
+  if (loading) return <p style={styles.loading}>Loading...</p>;
 
   return (
     <div style={styles.container}>
-      <h2 style={{ marginBottom: "6px" }}>Manage Applications</h2>
+      <h2 style={{ marginBottom: "6px", color: colors.text }}>Manage Applications</h2>
       <p style={styles.sub}>Review applicants for your projects</p>
 
       {message && <p style={styles.msg}>{message}</p>}
@@ -140,13 +141,13 @@ function ManageApplications() {
 }
 
 const statusBadge = (status) => {
-  const colors = {
-    pending: { background: "#fef3c7", color: "#92400e" },
-    accepted: { background: "#dcfce7", color: "#15803d" },
-    rejected: { background: "#fee2e2", color: "#991b1b" },
+  const variants = {
+    pending: { background: colors.warningMuted, color: colors.warning },
+    accepted: { background: colors.successMuted, color: colors.success },
+    rejected: { background: colors.dangerMuted, color: colors.danger },
   };
   return {
-    ...colors[status],
+    ...variants[status],
     padding: "4px 12px",
     borderRadius: "999px",
     fontSize: "12px",
@@ -157,73 +158,74 @@ const statusBadge = (status) => {
 };
 
 const styles = {
+  loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "750px", margin: "40px auto", padding: "24px" },
-  sub: { color: "#666", marginBottom: "24px" },
-  msg: { background: "#e0f2fe", padding: "10px", borderRadius: "4px", marginBottom: "16px" },
-  empty: { color: "#888", textAlign: "center", marginTop: "40px" },
+  sub: { color: colors.textMuted, marginBottom: "24px" },
+  msg: { background: colors.accentMuted, color: colors.accent, padding: "10px", borderRadius: "6px", marginBottom: "16px" },
+  empty: { color: colors.textMuted, textAlign: "center", marginTop: "40px" },
   projectBlock: {
-    background: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
     borderRadius: "10px",
     marginBottom: "24px",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+    boxShadow: shadow.card,
     overflow: "hidden",
   },
   projectHeader: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     padding: "14px 20px",
   },
   countBadge: {
-    background: "rgba(255,255,255,0.2)",
+    background: "rgba(11, 14, 20, 0.2)",
     padding: "4px 10px",
     borderRadius: "999px",
     fontSize: "13px",
   },
-  noApps: { color: "#888", padding: "16px 20px", margin: 0 },
+  noApps: { color: colors.textFaint, padding: "16px 20px", margin: 0 },
   appCard: {
-    borderBottom: "1px solid #f0f0f0",
+    borderBottom: `1px solid ${colors.border}`,
     padding: "16px 20px",
   },
   appTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" },
-  appName: { fontWeight: "600", margin: "0 0 2px" },
-  appEmail: { color: "#666", fontSize: "13px", margin: "0 0 8px" },
+  appName: { fontWeight: "600", margin: "0 0 2px", color: colors.text },
+  appEmail: { color: colors.textMuted, fontSize: "13px", margin: "0 0 8px" },
   skillsRow: { display: "flex", flexWrap: "wrap", gap: "6px" },
   skillTag: {
-    background: "#f3f4f6",
-    color: "#374151",
+    background: colors.surfaceAlt,
+    color: colors.textMuted,
+    border: `1px solid ${colors.border}`,
     borderRadius: "4px",
     padding: "2px 8px",
     fontSize: "12px",
   },
   skillMatch: {
-    background: "#dcfce7",
-    color: "#15803d",
+    background: colors.successMuted,
+    color: colors.success,
     borderRadius: "4px",
     padding: "2px 8px",
     fontSize: "12px",
     fontWeight: "600",
   },
-  noSkills: { color: "#aaa", fontSize: "12px" },
+  noSkills: { color: colors.textFaint, fontSize: "12px" },
   actions: { display: "flex", gap: "10px", marginTop: "12px" },
   acceptBtn: {
     padding: "6px 18px",
-    background: "#16a34a",
-    color: "#fff",
+    background: colors.success,
+    color: "#0b0e14",
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
     fontWeight: "600",
   },
   rejectBtn: {
     padding: "6px 18px",
-    background: "#dc2626",
-    color: "#fff",
+    background: colors.danger,
+    color: "#0b0e14",
     border: "none",
     borderRadius: "4px",
-    cursor: "pointer",
     fontWeight: "600",
   },
 };

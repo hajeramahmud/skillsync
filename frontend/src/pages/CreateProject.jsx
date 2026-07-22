@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 function CreateProject() {
   const [form, setForm] = useState({ title: "", description: "", skillsNeeded: "" });
@@ -24,7 +25,7 @@ function CreateProject() {
 
   return (
     <div style={styles.container}>
-      <h2>Create a Project</h2>
+      <h2 style={{ color: colors.text }}>Create a Project</h2>
       {error && <p style={styles.error}>{error}</p>}
       <form onSubmit={handleSubmit} style={styles.form}>
         <input
@@ -32,32 +33,64 @@ function CreateProject() {
           value={form.title}
           onChange={(e) => setForm({ ...form, title: e.target.value })}
           style={styles.input}
+          className="ss-input"
         />
         <textarea
           placeholder="Project Description"
           value={form.description}
           onChange={(e) => setForm({ ...form, description: e.target.value })}
           style={styles.textarea}
+          className="ss-input"
         />
         <input
           placeholder="Skills Needed (comma separated, e.g. React, Node.js)"
           value={form.skillsNeeded}
           onChange={(e) => setForm({ ...form, skillsNeeded: e.target.value })}
           style={styles.input}
+          className="ss-input"
         />
-        <button type="submit" style={styles.btn}>Create Project</button>
+        <button type="submit" style={styles.btn} className="ss-btn-primary">Create Project</button>
       </form>
     </div>
   );
 }
 
 const styles = {
-  container: { maxWidth: "500px", margin: "40px auto", padding: "24px", background: "#fff", borderRadius: "8px" },
+  container: {
+    maxWidth: "500px",
+    margin: "40px auto",
+    padding: "28px",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
+    borderRadius: "12px",
+    boxShadow: shadow.card,
+  },
   form: { display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" },
-  input: { padding: "10px", border: "1px solid #ddd", borderRadius: "4px" },
-  textarea: { padding: "10px", border: "1px solid #ddd", borderRadius: "4px", height: "100px", resize: "vertical" },
-  btn: { padding: "10px", background: "#4f46e5", color: "#fff", border: "none", borderRadius: "4px" },
-  error: { color: "red" },
+  input: {
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
+  },
+  textarea: {
+    padding: "10px 12px",
+    border: `1px solid ${colors.border}`,
+    borderRadius: "6px",
+    background: colors.surfaceAlt,
+    color: colors.text,
+    height: "100px",
+    resize: "vertical",
+  },
+  btn: {
+    padding: "10px",
+    background: colors.accent,
+    color: "#0b0e14",
+    border: "none",
+    borderRadius: "6px",
+    fontWeight: "600",
+  },
+  error: { color: colors.danger, fontSize: "14px" },
 };
 
 export default CreateProject;

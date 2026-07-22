@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { colors, shadow } from "../theme";
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -85,8 +86,8 @@ function UserProfile() {
     setTimeout(() => setMsg(""), 2500);
   };
 
-  if (loading) return <p style={{ padding: "40px" }}>Loading...</p>;
-  if (!profile) return <p style={{ padding: "40px" }}>User not found.</p>;
+  if (loading) return <p style={styles.loading}>Loading...</p>;
+  if (!profile) return <p style={styles.loading}>User not found.</p>;
 
   return (
     <div style={styles.container}>
@@ -94,7 +95,7 @@ function UserProfile() {
 
       <div style={styles.card}>
         <div style={styles.avatar}>{profile.name.charAt(0).toUpperCase()}</div>
-        <h2 style={{ margin: "0 0 4px" }}>{profile.name}</h2>
+        <h2 style={{ margin: "0 0 4px", color: colors.text }}>{profile.name}</h2>
         <p style={styles.email}>{profile.email}</p>
         <p style={styles.bio}>{profile.bio || "No bio added yet."}</p>
 
@@ -107,7 +108,7 @@ function UserProfile() {
         <h3 style={styles.sectionTitle}>Skills & Endorsements</h3>
 
         {profile.skills.length === 0 ? (
-          <p style={{ color: "#888" }}>No skills listed.</p>
+          <p style={{ color: colors.textMuted }}>No skills listed.</p>
         ) : (
           profile.skills.map((skill) => {
             const data = endorsements[skill] || { count: 0, endorserIds: [] };
@@ -130,7 +131,7 @@ function UserProfile() {
                       ✓ Endorsed
                     </button>
                   ) : (
-                    <button onClick={() => endorse(skill)} style={styles.endorseBtn}>
+                    <button onClick={() => endorse(skill)} style={styles.endorseBtn} className="ss-btn-primary">
                       + Endorse
                     </button>
                   )
@@ -141,7 +142,7 @@ function UserProfile() {
         )}
 
         {!token && (
-          <p style={{ color: "#888", fontSize: "13px", marginTop: "12px" }}>
+          <p style={{ color: colors.textMuted, fontSize: "13px", marginTop: "12px" }}>
             Log in to endorse skills.
           </p>
         )}
@@ -151,20 +152,23 @@ function UserProfile() {
 }
 
 const styles = {
+  loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "620px", margin: "40px auto", padding: "0 24px 60px" },
   toast: {
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     padding: "10px 16px",
     borderRadius: "6px",
     marginBottom: "16px",
     fontSize: "14px",
+    fontWeight: "600",
   },
   card: {
-    background: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
     padding: "32px 24px",
     borderRadius: "10px",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+    boxShadow: shadow.card,
     textAlign: "center",
     marginBottom: "20px",
   },
@@ -172,8 +176,8 @@ const styles = {
     width: "72px",
     height: "72px",
     borderRadius: "50%",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     fontSize: "32px",
     fontWeight: "bold",
     display: "flex",
@@ -181,56 +185,56 @@ const styles = {
     justifyContent: "center",
     margin: "0 auto 16px",
   },
-  email: { color: "#888", fontSize: "14px", margin: "0 0 12px" },
-  bio: { color: "#555", fontSize: "15px" },
+  email: { color: colors.textFaint, fontSize: "14px", margin: "0 0 12px" },
+  bio: { color: colors.textMuted, fontSize: "15px" },
   ownNote: {
     marginTop: "12px",
     padding: "8px 12px",
-    background: "#eef2ff",
+    background: colors.accentMuted,
     borderRadius: "6px",
-    color: "#4f46e5",
+    color: colors.accentHover,
     fontSize: "13px",
   },
   skillsCard: {
-    background: "#fff",
+    background: colors.surface,
+    border: `1px solid ${colors.border}`,
     padding: "24px",
     borderRadius: "10px",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
+    boxShadow: shadow.card,
   },
-  sectionTitle: { margin: "0 0 16px", color: "#333" },
+  sectionTitle: { margin: "0 0 16px", color: colors.text },
   skillRow: {
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
     padding: "10px 0",
-    borderBottom: "1px solid #f3f4f6",
+    borderBottom: `1px solid ${colors.border}`,
   },
   skillLeft: { display: "flex", alignItems: "center", gap: "10px" },
   skillBadge: {
-    background: "#eef2ff",
-    color: "#4f46e5",
+    background: colors.accentMuted,
+    color: colors.accentHover,
     padding: "4px 12px",
     borderRadius: "999px",
     fontSize: "14px",
     fontWeight: "600",
   },
-  endorseCount: { color: "#16a34a", fontSize: "13px", fontWeight: "500" },
+  endorseCount: { color: colors.success, fontSize: "13px", fontWeight: "500" },
   endorseBtn: {
     padding: "5px 14px",
-    background: "#4f46e5",
-    color: "#fff",
+    background: colors.accent,
+    color: "#0b0e14",
     border: "none",
     borderRadius: "6px",
-    cursor: "pointer",
     fontSize: "13px",
+    fontWeight: "600",
   },
   endorsedBtn: {
     padding: "5px 14px",
-    background: "#dcfce7",
-    color: "#16a34a",
-    border: "1px solid #16a34a",
+    background: colors.successMuted,
+    color: colors.success,
+    border: `1px solid ${colors.success}`,
     borderRadius: "6px",
-    cursor: "pointer",
     fontSize: "13px",
     fontWeight: "600",
   },

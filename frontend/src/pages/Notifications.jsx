@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { colors } from "../theme";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
@@ -27,13 +28,13 @@ function Notifications() {
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <h2>Notifications</h2>
-        {notifications.length > 0 && <button onClick={markRead} style={styles.btn}>Mark all as read</button>}
+        <h2 style={{ color: colors.text }}>Notifications</h2>
+        {notifications.length > 0 && <button onClick={markRead} style={styles.btn} className="ss-btn-outline">Mark all as read</button>}
       </div>
-      {notifications.length === 0 && <p>No notifications yet.</p>}
+      {notifications.length === 0 && <p style={styles.empty}>No notifications yet.</p>}
       {notifications.map((n) => (
-        <div key={n._id} style={{ ...styles.card, background: n.read ? "#fff" : "#f0f0ff" }}>
-          <p>{n.message}</p>
+        <div key={n._id} style={{ ...styles.card, background: n.read ? colors.surface : colors.accentMuted, borderColor: n.read ? colors.border : colors.accent }}>
+          <p style={{ color: colors.text }}>{n.message}</p>
           <p style={styles.time}>{new Date(n.createdAt).toLocaleString()}</p>
         </div>
       ))}
@@ -44,9 +45,10 @@ function Notifications() {
 const styles = {
   container: { maxWidth: "600px", margin: "40px auto", padding: "24px" },
   header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" },
-  card: { padding: "16px", borderRadius: "8px", marginBottom: "10px", border: "1px solid #ddd" },
-  time: { color: "#888", fontSize: "12px", marginTop: "6px" },
-  btn: { padding: "6px 14px", background: "#4f46e5", color: "#fff", border: "none", borderRadius: "4px" },
+  card: { padding: "16px", borderRadius: "8px", marginBottom: "10px", border: "1px solid" },
+  time: { color: colors.textFaint, fontSize: "12px", marginTop: "6px" },
+  empty: { color: colors.textMuted },
+  btn: { padding: "6px 14px", background: "transparent", color: colors.text, border: `1px solid ${colors.border}`, borderRadius: "6px" },
 };
 
 export default Notifications;
