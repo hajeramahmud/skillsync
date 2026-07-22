@@ -67,6 +67,8 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [userSkills, setUserSkills] = useState(null);
   const [message, setMessage] = useState("");
+  const [search, setSearch] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -94,9 +96,43 @@ function Projects() {
     setTimeout(() => setMessage(""), 3000);
   };
 
+  const allSkills = [...new Set(projects.flatMap((p) => p.skillsNeeded))].sort((a, b) =>
+    a.localeCompare(b)
+  );
+
+  const toggleSkill = (skill) => {
+    setSelectedSkills((prev) =>
+      prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearch("");
+    setSelectedSkills([]);
+  };
+
+  const query = search.trim().toLowerCase();
+  const selectedLower = selectedSkills.map((s) => s.toLowerCase());
+
+  const filteredProjects = projects.filter((p) => {
+    const matchesSearch =
+      !query ||
+      p.title.toLowerCase().includes(query) ||
+      p.description.toLowerCase().includes(query) ||
+      p.skillsNeeded.some((s) => s.toLowerCase().includes(query));
+
+    const matchesSkills =
+      selectedLower.length === 0 ||
+      p.skillsNeeded.some((s) => selectedLower.includes(s.toLowerCase()));
+
+    return matchesSearch && matchesSkills;
+  });
+
+  const hasActiveFilters = query.length > 0 || selectedSkills.length > 0;
+
   const recommended =
     userSkills && userSkills.length > 0
-      ? projects
+      ? filteredProjects
           .map((p) => ({ ...p, pct: getMatchPercent(userSkills, p.skillsNeeded) }))
           .filter((p) => p.pct > 0)
           .sort((a, b) => b.pct - a.pct)
@@ -105,6 +141,38 @@ function Projects() {
   return (
     <div style={styles.container}>
       {message && <p style={styles.msg}>{message}</p>}
+
+      <div style={styles.filterBar}>
+        <input
+          placeholder="Search projects by title, description, or skill..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          style={styles.search}
+        />
+
+        {allSkills.length > 0 && (
+          <div style={styles.chipRow}>
+            {allSkills.map((skill) => {
+              const active = selectedSkills.includes(skill);
+              return (
+                <button
+                  key={skill}
+                  onClick={() => toggleSkill(skill)}
+                  style={active ? styles.chipActive : styles.chip}
+                >
+                  {skill}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {hasActiveFilters && (
+          <button onClick={clearFilters} style={styles.clearBtn}>
+            Clear filters
+          </button>
+        )}
+      </div>
 
       {recommended.length > 0 && (
         <section style={{ marginBottom: "40px" }}>
@@ -130,7 +198,10 @@ function Projects() {
       <section>
         <h2 style={{ marginBottom: "16px" }}>All Projects</h2>
         {projects.length === 0 && <p>No projects yet.</p>}
-        {projects.map((p) => (
+        {projects.length > 0 && filteredProjects.length === 0 && (
+          <p>No projects match your filters.</p>
+        )}
+        {filteredProjects.map((p) => (
           <ProjectCard
             key={p._id}
             p={p}
@@ -197,6 +268,43 @@ const styles = {
     padding: "10px",
     borderRadius: "4px",
     marginBottom: "12px",
+  },
+  filterBar: { marginBottom: "32px" },
+  search: {
+    width: "100%",
+    padding: "10px",
+    border: "1px solid #ddd",
+    borderRadius: "4px",
+    marginBottom: "12px",
+  },
+  chipRow: { display: "flex", flexWrap: "wrap", gap: "8px", marginBottom: "12px" },
+  chip: {
+    padding: "5px 14px",
+    borderRadius: "999px",
+    border: "1px solid #ddd",
+    background: "#fff",
+    color: "#374151",
+    fontSize: "13px",
+    cursor: "pointer",
+  },
+  chipActive: {
+    padding: "5px 14px",
+    borderRadius: "999px",
+    border: "1px solid #4f46e5",
+    background: "#4f46e5",
+    color: "#fff",
+    fontSize: "13px",
+    fontWeight: "600",
+    cursor: "pointer",
+  },
+  clearBtn: {
+    padding: "5px 14px",
+    background: "none",
+    border: "1px solid #ccc",
+    color: "#555",
+    borderRadius: "4px",
+    fontSize: "13px",
+    cursor: "pointer",
   },
   sectionHeader: { display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px" },
   sectionIcon: { color: "#4f46e5", fontSize: "18px" },
