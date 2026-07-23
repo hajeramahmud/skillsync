@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -23,7 +24,7 @@ function Dashboard() {
       .then((res) => setUser(res.data));
   }, []);
 
-  if (!user) return <p style={styles.loading}>Loading...</p>;
+  if (!user) return <Spinner label="Loading..." />;
 
   return (
     <div style={styles.container}>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 function Stats() {
   const [stats, setStats] = useState(null);
@@ -13,7 +14,7 @@ function Stats() {
       .finally(() => setLoading(false));
   }, []);
 
-  if (loading) return <p style={styles.loading}>Loading stats...</p>;
+  if (loading) return <Spinner label="Loading stats..." />;
   if (!stats) return <p style={styles.loading}>Failed to load stats.</p>;
 
   const maxSkillCount = stats.topSkills[0]?.count || 1;

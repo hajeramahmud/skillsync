@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { colors, font } from "../theme";
+import Icon from "./Icon";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -39,25 +40,45 @@ function Navbar() {
         <span style={styles.logoPrompt}>&gt;</span>SkillSync
       </Link>
       <div style={styles.links}>
-        <Link to="/projects" style={styles.link} className="ss-navlink">Projects</Link>
-        <Link to="/stats" style={styles.link} className="ss-navlink">Leaderboard</Link>
+        <Link to="/projects" style={styles.link} className="ss-navlink">
+          <Icon name="folder" size={15} /> Projects
+        </Link>
+        <Link to="/stats" style={styles.link} className="ss-navlink">
+          <Icon name="barChart" size={15} /> Leaderboard
+        </Link>
         {token ? (
           <>
-            <Link to="/dashboard" style={styles.link} className="ss-navlink">Dashboard</Link>
-            <Link to="/talent" style={styles.link} className="ss-navlink">Talent</Link>
-            <Link to="/create-project" style={styles.link} className="ss-navlink">+ New Project</Link>
-            <Link to="/manage-applications" style={styles.link} className="ss-navlink">My Applicants</Link>
+            <Link to="/dashboard" style={styles.link} className="ss-navlink">
+              <Icon name="home" size={15} /> Dashboard
+            </Link>
+            <Link to="/talent" style={styles.link} className="ss-navlink">
+              <Icon name="user" size={15} /> Talent
+            </Link>
+            <Link to="/create-project" style={styles.link} className="ss-navlink">
+              <Icon name="plusCircle" size={15} /> New Project
+            </Link>
+            <Link to="/manage-applications" style={styles.link} className="ss-navlink">
+              <Icon name="clipboard" size={15} /> My Applicants
+            </Link>
             <Link to="/notifications" style={styles.notifLink} className="ss-navlink">
-              Notifications
+              <Icon name="bell" size={15} /> Notifications
               {unread > 0 && <span style={styles.badge}>{unread}</span>}
             </Link>
-            <Link to="/edit-profile" style={styles.link} className="ss-navlink">Edit Profile</Link>
-            <button onClick={logout} style={styles.btn} className="ss-btn-outline">Logout</button>
+            <Link to="/edit-profile" style={styles.link} className="ss-navlink">
+              <Icon name="edit" size={15} /> Edit Profile
+            </Link>
+            <button onClick={logout} style={styles.btn} className="ss-btn-outline">
+              <Icon name="logOut" size={15} /> Logout
+            </button>
           </>
         ) : (
           <>
-            <Link to="/login" style={styles.link} className="ss-navlink">Login</Link>
-            <Link to="/register" style={styles.link} className="ss-navlink">Register</Link>
+            <Link to="/login" style={styles.link} className="ss-navlink">
+              <Icon name="logIn" size={15} /> Login
+            </Link>
+            <Link to="/register" style={styles.link} className="ss-navlink">
+              <Icon name="userPlus" size={15} /> Register
+            </Link>
           </>
         )}
       </div>
@@ -88,7 +109,14 @@ const styles = {
   },
   logoPrompt: { color: colors.accent, marginRight: "2px" },
   links: { display: "flex", gap: "20px", alignItems: "center" },
-  link: { textDecoration: "none", color: colors.textMuted, fontSize: "14px" },
+  link: {
+    textDecoration: "none",
+    color: colors.textMuted,
+    fontSize: "14px",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+  },
   notifLink: {
     textDecoration: "none",
     color: colors.textMuted,
@@ -96,7 +124,7 @@ const styles = {
     position: "relative",
     display: "inline-flex",
     alignItems: "center",
-    gap: "4px",
+    gap: "6px",
   },
   badge: {
     background: colors.danger,
@@ -115,6 +143,9 @@ const styles = {
     padding: "6px 14px",
     borderRadius: "6px",
     fontSize: "14px",
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
   },
 };
 

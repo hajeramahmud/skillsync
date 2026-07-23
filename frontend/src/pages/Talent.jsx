@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 function UserCard({ u, search }) {
   const query = search.trim().toLowerCase();
@@ -52,7 +53,7 @@ function Talent() {
     return <p style={styles.notice}>Please log in to browse the talent directory.</p>;
   }
 
-  if (loading) return <p style={styles.notice}>Loading...</p>;
+  if (loading) return <Spinner label="Loading..." />;
 
   const query = search.trim().toLowerCase();
   const filtered = query

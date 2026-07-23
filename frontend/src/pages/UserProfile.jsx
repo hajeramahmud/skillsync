@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -86,7 +87,7 @@ function UserProfile() {
     setTimeout(() => setMsg(""), 2500);
   };
 
-  if (loading) return <p style={styles.loading}>Loading...</p>;
+  if (loading) return <Spinner label="Loading..." />;
   if (!profile) return <p style={styles.loading}>User not found.</p>;
 
   return (

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 const STATUSES = ["todo", "inprogress", "done"];
 const STATUS_LABELS = { todo: "To Do", inprogress: "In Progress", done: "Done" };
@@ -89,7 +90,7 @@ function ProjectDetail() {
     setTasks((prev) => prev.filter((t) => t._id !== taskId));
   };
 
-  if (loading) return <p style={styles.loading}>Loading...</p>;
+  if (loading) return <Spinner label="Loading..." />;
   if (!project) return <p style={styles.loading}>Project not found.</p>;
 
   const tasksByStatus = STATUSES.reduce((acc, s) => {

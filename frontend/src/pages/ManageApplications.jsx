@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Spinner from "../components/Spinner";
 
 function ManageApplications() {
   const [myProjects, setMyProjects] = useState([]);
@@ -60,7 +61,7 @@ function ManageApplications() {
     }
   };
 
-  if (loading) return <p style={styles.loading}>Loading...</p>;
+  if (loading) return <Spinner label="Loading..." />;
 
   return (
     <div style={styles.container}>

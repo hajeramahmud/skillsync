@@ -125,3 +125,13 @@ button {
 .ss-navlink:hover {
   color: #e6e8ec !important;
 }
+
+@keyframes ss-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ss-spinner {
+  animation: ss-spin 0.7s linear infinite;
+}
