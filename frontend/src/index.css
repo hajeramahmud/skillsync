@@ -135,3 +135,18 @@ button {
 .ss-spinner {
   animation: ss-spin 0.7s linear infinite;
 }
+
+@keyframes ss-toast-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.ss-toast {
+  animation: ss-toast-in 0.25s ease;
+}

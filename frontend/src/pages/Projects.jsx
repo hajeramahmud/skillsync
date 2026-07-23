@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
+import Toast from "../components/Toast";
 
 const getMatchPercent = (userSkills, skillsNeeded) => {
   if (!skillsNeeded.length) return 100;
@@ -68,6 +69,7 @@ function Projects() {
   const [projects, setProjects] = useState([]);
   const [userSkills, setUserSkills] = useState(null);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
   const [search, setSearch] = useState("");
   const [selectedSkills, setSelectedSkills] = useState([]);
   const token = localStorage.getItem("token");
@@ -91,8 +93,10 @@ function Projects() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessage("Application sent!");
+      setMessageType("success");
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to apply");
+      setMessageType("error");
     }
     setTimeout(() => setMessage(""), 3000);
   };
@@ -141,7 +145,7 @@ function Projects() {
 
   return (
     <div style={styles.container}>
-      {message && <p style={styles.msg}>{message}</p>}
+      <Toast message={message} type={messageType} />
 
       <div style={styles.filterBar}>
         <input
@@ -268,13 +272,6 @@ const styles = {
     borderRadius: "6px",
     textDecoration: "none",
     fontSize: "14px",
-  },
-  msg: {
-    background: colors.accentMuted,
-    color: colors.accent,
-    padding: "10px",
-    borderRadius: "6px",
-    marginBottom: "12px",
   },
   filterBar: { marginBottom: "32px" },
   search: {

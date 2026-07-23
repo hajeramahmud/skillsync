@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { colors, shadow } from "../theme";
 import Spinner from "../components/Spinner";
+import Avatar from "../components/Avatar";
+import Toast from "../components/Toast";
 
 function ManageApplications() {
   const [myProjects, setMyProjects] = useState([]);
@@ -9,6 +11,7 @@ function ManageApplications() {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
 
@@ -37,13 +40,19 @@ function ManageApplications() {
         );
         setApplications(appMap);
       } catch (err) {
-        setMessage("Failed to load data.");
+        flash("Failed to load data.", "error");
       } finally {
         setLoading(false);
       }
     };
     load();
   }, []);
+
+  const flash = (text, type = "info") => {
+    setMessage(text);
+    setMessageType(type);
+    setTimeout(() => setMessage(""), 3000);
+  };
 
   const updateStatus = async (applicationId, projectId, status) => {
     try {
@@ -54,10 +63,9 @@ function ManageApplications() {
           a._id === applicationId ? { ...a, status } : a
         ),
       }));
-      setMessage(`Application ${status}.`);
-      setTimeout(() => setMessage(""), 3000);
+      flash(`Application ${status}.`, status === "accepted" ? "success" : "info");
     } catch (err) {
-      setMessage("Failed to update status.");
+      flash("Failed to update status.", "error");
     }
   };
 
@@ -65,10 +73,9 @@ function ManageApplications() {
 
   return (
     <div style={styles.container}>
+      <Toast message={message} type={messageType} />
       <h2 style={{ marginBottom: "6px", color: colors.text }}>Manage Applications</h2>
       <p style={styles.sub}>Review applicants for your projects</p>
-
-      {message && <p style={styles.msg}>{message}</p>}
 
       {myProjects.length === 0 && (
         <p style={styles.empty}>You have not created any projects yet.</p>
@@ -91,25 +98,28 @@ function ManageApplications() {
               apps.map((app) => (
                 <div key={app._id} style={styles.appCard}>
                   <div style={styles.appTop}>
-                    <div>
-                      <p style={styles.appName}>{app.applicant.name}</p>
-                      <p style={styles.appEmail}>{app.applicant.email}</p>
-                      <div style={styles.skillsRow}>
-                        {app.applicant.skills.length > 0
-                          ? app.applicant.skills.map((s) => {
-                              const isNeeded = project.skillsNeeded
-                                .map((x) => x.toLowerCase())
-                                .includes(s.toLowerCase());
-                              return (
-                                <span
-                                  key={s}
-                                  style={isNeeded ? styles.skillMatch : styles.skillTag}
-                                >
-                                  {s}
-                                </span>
-                              );
-                            })
-                          : <span style={styles.noSkills}>No skills listed</span>}
+                    <div style={styles.appLeft}>
+                      <Avatar name={app.applicant.name} size={38} />
+                      <div>
+                        <p style={styles.appName}>{app.applicant.name}</p>
+                        <p style={styles.appEmail}>{app.applicant.email}</p>
+                        <div style={styles.skillsRow}>
+                          {app.applicant.skills.length > 0
+                            ? app.applicant.skills.map((s) => {
+                                const isNeeded = project.skillsNeeded
+                                  .map((x) => x.toLowerCase())
+                                  .includes(s.toLowerCase());
+                                return (
+                                  <span
+                                    key={s}
+                                    style={isNeeded ? styles.skillMatch : styles.skillTag}
+                                  >
+                                    {s}
+                                  </span>
+                                );
+                              })
+                            : <span style={styles.noSkills}>No skills listed</span>}
+                        </div>
                       </div>
                     </div>
                     <span style={statusBadge(app.status)}>{app.status}</span>
@@ -162,7 +172,6 @@ const styles = {
   loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "750px", margin: "40px auto", padding: "24px" },
   sub: { color: colors.textMuted, marginBottom: "24px" },
-  msg: { background: colors.accentMuted, color: colors.accent, padding: "10px", borderRadius: "6px", marginBottom: "16px" },
   empty: { color: colors.textMuted, textAlign: "center", marginTop: "40px" },
   projectBlock: {
     background: colors.surface,
@@ -192,6 +201,7 @@ const styles = {
     padding: "16px 20px",
   },
   appTop: { display: "flex", justifyContent: "space-between", alignItems: "flex-start" },
+  appLeft: { display: "flex", gap: "12px", alignItems: "flex-start" },
   appName: { fontWeight: "600", margin: "0 0 2px", color: colors.text },
   appEmail: { color: colors.textMuted, fontSize: "13px", margin: "0 0 8px" },
   skillsRow: { display: "flex", flexWrap: "wrap", gap: "6px" },

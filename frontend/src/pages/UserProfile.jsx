@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
 import Spinner from "../components/Spinner";
+import Avatar from "../components/Avatar";
+import Toast from "../components/Toast";
 
 const getUserId = () => {
   const token = localStorage.getItem("token");
@@ -20,6 +22,7 @@ function UserProfile() {
   const [endorsements, setEndorsements] = useState({});
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState("info");
   const token = localStorage.getItem("token");
   const currentUserId = getUserId();
   const isOwnProfile = currentUserId === userId;
@@ -55,9 +58,9 @@ function UserProfile() {
           endorserIds: [...(prev[skill]?.endorserIds || []), currentUserId],
         },
       }));
-      flash("Endorsed!");
+      flash("Endorsed!", "success");
     } catch (err) {
-      flash(err.response?.data?.message || "Failed to endorse");
+      flash(err.response?.data?.message || "Failed to endorse", "error");
     }
   };
 
@@ -76,14 +79,15 @@ function UserProfile() {
           ),
         },
       }));
-      flash("Endorsement removed");
+      flash("Endorsement removed", "info");
     } catch {
-      flash("Failed to remove endorsement");
+      flash("Failed to remove endorsement", "error");
     }
   };
 
-  const flash = (text) => {
+  const flash = (text, type = "info") => {
     setMsg(text);
+    setMsgType(type);
     setTimeout(() => setMsg(""), 2500);
   };
 
@@ -92,10 +96,12 @@ function UserProfile() {
 
   return (
     <div style={styles.container}>
-      {msg && <div style={styles.toast}>{msg}</div>}
+      <Toast message={msg} type={msgType} />
 
       <div style={styles.card}>
-        <div style={styles.avatar}>{profile.name.charAt(0).toUpperCase()}</div>
+        <div style={styles.avatarWrap}>
+          <Avatar name={profile.name} size={72} />
+        </div>
         <h2 style={{ margin: "0 0 4px", color: colors.text }}>{profile.name}</h2>
         <p style={styles.email}>{profile.email}</p>
         <p style={styles.bio}>{profile.bio || "No bio added yet."}</p>
@@ -155,15 +161,6 @@ function UserProfile() {
 const styles = {
   loading: { padding: "40px", color: colors.textMuted },
   container: { maxWidth: "620px", margin: "40px auto", padding: "0 24px 60px" },
-  toast: {
-    background: colors.accent,
-    color: "#0b0e14",
-    padding: "10px 16px",
-    borderRadius: "6px",
-    marginBottom: "16px",
-    fontSize: "14px",
-    fontWeight: "600",
-  },
   card: {
     background: colors.surface,
     border: `1px solid ${colors.border}`,
@@ -173,19 +170,7 @@ const styles = {
     textAlign: "center",
     marginBottom: "20px",
   },
-  avatar: {
-    width: "72px",
-    height: "72px",
-    borderRadius: "50%",
-    background: colors.accent,
-    color: "#0b0e14",
-    fontSize: "32px",
-    fontWeight: "bold",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: "0 auto 16px",
-  },
+  avatarWrap: { display: "flex", justifyContent: "center", marginBottom: "16px" },
   email: { color: colors.textFaint, fontSize: "14px", margin: "0 0 12px" },
   bio: { color: colors.textMuted, fontSize: "15px" },
   ownNote: {

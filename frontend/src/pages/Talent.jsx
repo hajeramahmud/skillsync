@@ -3,15 +3,19 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
 import Spinner from "../components/Spinner";
+import Avatar from "../components/Avatar";
 
 function UserCard({ u, search }) {
   const query = search.trim().toLowerCase();
 
   return (
     <div style={styles.card} className="ss-card">
-      <Link to={`/users/${u._id}`} style={styles.nameLink} className="ss-link">
-        <h3 style={{ margin: "0 0 4px" }}>{u.name}</h3>
-      </Link>
+      <div style={styles.cardHead}>
+        <Avatar name={u.name} size={40} />
+        <Link to={`/users/${u._id}`} style={styles.nameLink} className="ss-link">
+          <h3 style={{ margin: 0 }}>{u.name}</h3>
+        </Link>
+      </div>
       <p style={styles.email}>{u.email}</p>
       {u.bio && <p style={styles.bio}>{u.bio}</p>}
       <p style={styles.skillsRow}>
@@ -109,6 +113,7 @@ const styles = {
     borderLeft: `4px solid ${colors.accent}`,
     boxShadow: shadow.card,
   },
+  cardHead: { display: "flex", alignItems: "center", gap: "12px", marginBottom: "8px" },
   nameLink: { textDecoration: "none", color: colors.text },
   email: { color: colors.textFaint, fontSize: "13px", marginBottom: "8px" },
   bio: { color: colors.textMuted, marginBottom: "8px" },

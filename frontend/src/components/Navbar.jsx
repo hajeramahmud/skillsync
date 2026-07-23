@@ -3,18 +3,37 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { colors, font } from "../theme";
 import Icon from "./Icon";
+import Avatar from "./Avatar";
+
+const getUserId = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  try {
+    return JSON.parse(atob(token.split(".")[1])).id;
+  } catch {
+    return null;
+  }
+};
 
 function Navbar() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const currentUserId = getUserId();
   const [unread, setUnread] = useState(0);
+  const [userName, setUserName] = useState("");
   const intervalRef = useRef(null);
 
   useEffect(() => {
     if (!token) {
       setUnread(0);
+      setUserName("");
       return;
     }
+
+    axios
+      .get("/api/users/profile", { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => setUserName(res.data.name))
+      .catch(() => {});
 
     const fetchUnread = () => {
       axios
@@ -67,6 +86,11 @@ function Navbar() {
             <Link to="/edit-profile" style={styles.link} className="ss-navlink">
               <Icon name="edit" size={15} /> Edit Profile
             </Link>
+            {currentUserId && userName && (
+              <Link to={`/users/${currentUserId}`} title={userName}>
+                <Avatar name={userName} size={30} />
+              </Link>
+            )}
             <button onClick={logout} style={styles.btn} className="ss-btn-outline">
               <Icon name="logOut" size={15} /> Logout
             </button>

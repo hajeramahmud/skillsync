@@ -9,6 +9,7 @@ const projectRoutes = require("./routes/projectRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const { projectRouter: taskProjectRoutes, taskRouter: taskRoutes } = require("./routes/taskRoutes");
+const statsRoutes = require("./routes/statsRoutes");
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/projects", applicationRoutes);
 app.use("/api/projects", taskProjectRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/stats", statsRoutes);
 
 app.get("/", (req, res) => {
   res.send("SkillSync API Running...");

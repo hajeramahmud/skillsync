@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { colors, shadow } from "../theme";
 import Spinner from "../components/Spinner";
+import Avatar from "../components/Avatar";
 
 function Stats() {
   const [stats, setStats] = useState(null);
@@ -100,9 +101,7 @@ function Stats() {
             )}
             {stats.topMembers.map((m, i) => (
               <div key={m._id} style={styles.listCard}>
-                <div style={styles.memberAvatar}>
-                  {m.name?.charAt(0).toUpperCase() || "?"}
-                </div>
+                <Avatar name={m.name || "?"} size={36} />
                 <div style={{ flex: 1 }}>
                   <p style={styles.listTitle}>{m.name || "Unknown"}</p>
                   <p style={styles.listMeta}>
@@ -185,19 +184,6 @@ const styles = {
     justifyContent: "center",
     fontWeight: "bold",
     fontSize: "13px",
-    flexShrink: 0,
-  },
-  memberAvatar: {
-    width: "36px",
-    height: "36px",
-    borderRadius: "50%",
-    background: colors.accent,
-    color: "#0b0e14",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
-    fontSize: "15px",
     flexShrink: 0,
   },
   listTitle: { margin: "0 0 2px", fontWeight: "600", fontSize: "14px", color: colors.text },
