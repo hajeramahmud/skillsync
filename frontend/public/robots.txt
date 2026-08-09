@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /notifications
+Disallow: /edit-profile
+Disallow: /manage-applications
+Disallow: /create-project
+
+Sitemap: https://skillsync-skill-sync2.vercel.app/sitemap.xml
