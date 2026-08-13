@@ -12,6 +12,7 @@ import EditProfile from "./pages/EditProfile";
 import ManageApplications from "./pages/ManageApplications";
 import ProjectDetail from "./pages/ProjectDetail";
 import UserProfile from "./pages/UserProfile";
+import Stats from "./pages/Stats";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/stats" element={<Stats />} />
         <Route path="/projects/:id" element={<ProjectDetail />} />
         <Route path="/talent" element={<Talent />} />
         <Route path="/create-project" element={<CreateProject />} />
