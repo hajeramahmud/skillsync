@@ -1,3 +1,4 @@
+import TeamContribution from "../components/TeamContribution";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -20,6 +21,7 @@ function UserProfile() {
   const { userId } = useParams();
   const [profile, setProfile] = useState(null);
   const [endorsements, setEndorsements] = useState({});
+  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
   const [msgType, setMsgType] = useState("info");
@@ -30,12 +32,15 @@ function UserProfile() {
   useEffect(() => {
     const load = async () => {
       try {
-        const [profileRes, endorseRes] = await Promise.all([
-          axios.get(`/api/users/${userId}`),
-          axios.get(`/api/users/${userId}/endorsements`),
-        ]);
-        setProfile(profileRes.data);
-        setEndorsements(endorseRes.data);
+       const [profileRes, endorseRes, projectsRes] = await Promise.all([
+  axios.get(`/api/users/${userId}`),
+  axios.get(`/api/users/${userId}/endorsements`),
+  axios.get(`/api/users/${userId}/projects`),
+]);
+
+setProfile(profileRes.data);
+setEndorsements(endorseRes.data);
+setProjects(projectsRes.data);
       } catch {
         setProfile(null);
       }
@@ -158,6 +163,10 @@ function UserProfile() {
           </p>
         )}
       </div>
+      <TeamContribution
+  projects={projects}
+  userId={userId}
+/>
     </div>
   );
 }

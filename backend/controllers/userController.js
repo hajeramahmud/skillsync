@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Project = require("../models/Project");
 
 const getAllUsers = async (req, res) => {
   const users = await User.find().select("-password");
@@ -26,5 +27,23 @@ const getPublicProfile = async (req, res) => {
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json(user);
 };
+const getUserProjects = async (req, res) => {
+  const projects = await Project.find({
+    $or: [
+      { owner: req.params.userId },
+      { members: req.params.userId },
+    ],
+  })
+    .populate("owner", "name email")
+    .populate("members", "name email");
 
-module.exports = { getAllUsers, getProfile, updateProfile, getPublicProfile };
+  res.json(projects);
+};
+
+module.exports = {
+  getAllUsers,
+  getProfile,
+  updateProfile,
+  getPublicProfile,
+  getUserProjects,
+};
