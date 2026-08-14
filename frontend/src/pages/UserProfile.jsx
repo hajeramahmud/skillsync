@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { colors, shadow } from "../theme";
 import Spinner from "../components/Spinner";
-import Avatar from "../components/Avatar";
+import ProfilePicture from "../components/ProfilePicture";
 import Toast from "../components/Toast";
 
 const getUserId = () => {
@@ -100,8 +100,12 @@ function UserProfile() {
 
       <div style={styles.card}>
         <div style={styles.avatarWrap}>
-          <Avatar name={profile.name} size={72} />
-        </div>
+  <ProfilePicture
+    name={profile.name}
+    image={profile.profilePicture}
+    size={96}
+  />
+</div>
         <h2 style={{ margin: "0 0 4px", color: colors.text }}>{profile.name}</h2>
         <p style={styles.email}>{profile.email}</p>
         <p style={styles.bio}>{profile.bio || "No bio added yet."}</p>

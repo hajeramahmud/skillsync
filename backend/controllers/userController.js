@@ -10,11 +10,11 @@ const getProfile = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { name, bio, skills } = req.body;
+  const { name, bio, skills, profilePicture } = req.body;
 
   const user = await User.findByIdAndUpdate(
     req.user._id,
-    { name, bio, skills },
+    { name, bio, skills , profilePicture},
     { new: true }
   ).select("-password");
 
