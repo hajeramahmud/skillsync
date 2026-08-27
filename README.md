@@ -1,10 +1,10 @@
-##SkillSync
+## SkillSync
 
 A Skill-Based Team Formation and Collaboration Platform for Students
 
 ---
 
-##📌 Project Overview
+## 📌 Project Overview
 
 SkillSync is a skill-based team formation and collaboration platform designed for students.
 
@@ -14,9 +14,9 @@ SkillSync brings team formation, project collaboration, task management, notific
 
 ---
 
-##✨ Key Features
+## ✨ Key Features
 
-##👤 User Profile
+## 👤 User Profile
 
 - Create and manage a personal profile
 - Add and showcase skills
@@ -24,14 +24,14 @@ SkillSync brings team formation, project collaboration, task management, notific
 - Update personal information and bio
 - View recent activities
 
-##🤝 Team Formation
+## 🤝 Team Formation
 
 - Showcase individual skills
 - Find suitable teammates
 - Form teams for different projects
 - View team members and their contributions
 
-##📂 Project Management
+## 📂 Project Management
 
 - Create and manage projects
 - Add project descriptions
@@ -39,38 +39,38 @@ SkillSync brings team formation, project collaboration, task management, notific
 - Manage project members
 - View project information
 
-##📨 Project Applications
+## 📨 Project Applications
 
 - Students can apply to join projects
 - Project owners can manage applications
 - Manage project members
 
-##✅ Task Management
+## ✅ Task Management
 
 - Create and manage project tasks
 - Assign tasks to team members
 - Track project-related activities
 
-##🔔 Notifications
+## 🔔 Notifications
 
 - Receive notifications for important project activities
 - Stay updated about applications and team activities
 
-##⭐ Skill Endorsement
+## ⭐ Skill Endorsement
 
 - Team members can endorse each other's skills
 - Showcase skills and contributions within the platform
 
-##📊 Team Contribution
+## 📊 Team Contribution
 
 - Display team members' contributions
 - Track participation within projects
 
 ---
 
-##👥 User Roles
+## 👥 User Roles
 
-##🎓 Student
+## 🎓 Student
 
 Students can:
 
@@ -83,7 +83,7 @@ Students can:
 - View notifications
 - Receive skill endorsements
 
-##👑 Project Owner
+## 👑 Project Owner
 
 Project owners can:
 
@@ -96,26 +96,26 @@ Project owners can:
 
 ---
 
-##🛠️ Technology Stack
+## 🛠️ Technology Stack
 
-##Frontend
+## Frontend
 
 - React.js
 - React Router
 - JavaScript
 - CSS
 
-##Backend
+## Backend
 
 - Node.js
 - Express.js
 
-##Database
+## Database
 
 - MongoDB
 - Mongoose
 
-##Tools & Deployment
+## Tools & Deployment
 
 - Git
 - GitHub
@@ -123,7 +123,7 @@ Project owners can:
 
 ---
 
-##🏗️ System Architecture
+## 🏗️ System Architecture
 
 SkillSync follows a client-server architecture. The React frontend communicates with the Node.js and Express backend through REST APIs. The backend handles application logic and communicates with MongoDB using Mongoose.
 
@@ -158,7 +158,7 @@ Architecture Flow
 
 ---
 
-##🔄 How SkillSync Works
+## 🔄 How SkillSync Works
 
 Student
    ↓
@@ -186,7 +186,7 @@ Collaborate with Team Members
 
 ---
 
-##🌟 Why SkillSync?
+## 🌟 Why SkillSync?
 
 Finding the right teammates for a project can be difficult for students, especially when they do not know who has the required skills.
 
@@ -194,7 +194,7 @@ SkillSync addresses this problem by providing a platform where students can show
 
 ---
 
-##⚠️ Current Limitations
+## ⚠️ Current Limitations
 
 Although SkillSync provides several features for student collaboration and team formation, the current version has some limitations:
 
@@ -207,7 +207,7 @@ Although SkillSync provides several features for student collaboration and team 
 
 ---
 
-##💻 Local Installation
+## 💻 Local Installation
 
 Prerequisites
 
@@ -246,7 +246,7 @@ The backend server will start using the configured port.
 
 ---
 
-##📁 Project Structure
+## 📁 Project Structure
 
 skillsync/
 │
@@ -272,14 +272,14 @@ skillsync/
 ---
 
 
-##🌐 Live Demo
+## 🌐 Live Demo
 
 Live Website:
 skillsync-lac-nu.vercel.app
 ---
 
 
-##📄 License
+## 📄 License
 
 This project was created for academic learning and practical implementation as part of the Web Programming Lab course at Metropolitan University.
 
