@@ -128,4 +128,59 @@ test("should sort candidates alphabetically when scores are equal", async () => 
   expect(response.body.recommendations[1].score).toBe(100);
 });
 
+test("should return empty recommendations when project has no required skills", async () => {
+  Project.findById.mockResolvedValueOnce({
+    _id: projectId,
+    title: "SkillSync App",
+    skillsNeeded: [],
+    owner: "owner-id",
+    members: []
+  });
+
+  const response = await request(app)
+    .get(`/api/projects/${projectId}/recommendations`);
+
+  expect(response.status).toBe(200);
+  expect(response.body.success).toBe(true);
+  expect(response.body.message).toBe(
+    "No skills required for this project"
+  );
+  expect(response.body.recommendations).toEqual([]);
+  expect(User.aggregate).not.toHaveBeenCalled();
+});
+
+test("should return 500 when candidate aggregation fails", async () => {
+  User.aggregate.mockRejectedValueOnce(
+    new Error("Database error")
+  );
+
+  const response = await request(app)
+    .get(`/api/projects/${projectId}/recommendations`);
+
+  expect(response.status).toBe(500);
+  expect(response.body.message).toBe(
+    "Failed to generate recommendations"
+  );
+});
+
+test("should exclude project owner and existing members from candidates", async () => {
+  Project.findById.mockResolvedValueOnce({
+    _id: projectId,
+    title: "SkillSync App",
+    skillsNeeded: ["React", "Node.js"],
+    owner: "owner-id",
+    members: ["member-id"]
+  });
+
+  await request(app)
+    .get(`/api/projects/${projectId}/recommendations`);
+
+  const pipeline = User.aggregate.mock.calls[0][0];
+
+  expect(pipeline[0].$match._id.$nin).toEqual([
+    "owner-id",
+    "member-id"
+  ]);
+});
+
 });
